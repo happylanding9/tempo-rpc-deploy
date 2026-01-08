@@ -27,9 +27,12 @@ chmod +x tempo-rpc.sh
 
 # Recommended: resume-able download mode + force import
 sudo bash ./tempo-rpc.sh --snapshot --snapshot-force --snapshot-download-to-file \
-  --snapshot-url "<SNAPSHOT_URL>"Notes:
+  --snapshot-url ""https://tempo-node-snapshots.tempoxyz.dev/tempo-42429-9007530-1767762022.tar.lz4""Notes:
 - `--snapshot-download-to-file` downloads the snapshot to a local file first (supports resume). This needs extra disk space.
-- Snapshots are large (200GB+). **Do NOT host snapshots on GitHub**. Use object storage (S3/R2/OSS/B2/etc.) and provide a public HTTPS URL.
+- SNAPSHOT_URL="https://tempo-node-snapshots.tempoxyz.dev/tempo-42429-9007530-1767762022.tar.lz4"
+  aria2c -c -x 16 -s 16 -k 1M -o snapshot.tar.lz4 "$SNAPSHOT_URL"
+  lz4 -dc /root/tempo-node/snapshot.tar.lz4 | tar -xf -
+- Snapshots are large (200GB+). 
 
 ## Non-snapshot install
 sudo bash ./tempo-rpc.sht / Version Mismatch
@@ -52,18 +55,27 @@ Describe the issue in 1–2 sentences.
 ## Service command (systemd)
 Paste:
 sudo systemctl show tempo.service -p ExecStart --no-pager## Steps to reproduce
-1.
-2.
-3.
+1.sudo stop tempo.service
+2.sudo start tempo.service
+3.sudo journalctl -u tempo.service
 
 ## Expected vs actual
 - Expected:
 - Actual:
 
 ## Logs (most relevant)
-Paste the last ~200 lines around the error/panic:
-sudo journalctl -u tempo.service -n 200 --no-pagerIf possible, include filtered output:
-sudo journalctl -u tempo.service -n 500 --no-pager | grep -i -E "panic|error|deserial|genesis|Unsupported|TxType|Status|checkpoint|target|latest_block"## RPC checks
+Jan 08 13:54:44 strn tempo[750976]: 2026-01-08T13:54:44.864162Z  INFO Executed block range start=9108374 end=9108492 throughput="89.83Mgas/second"
+Jan 08 13:54:54 strn tempo[750976]: 2026-01-08T13:54:54.879415Z  INFO Executed block range start=9108493 end=9108661 throughput="122.90Mgas/second"
+Jan 08 13:55:01 strn tempo[750976]: 2026-01-08T13:55:01.979200Z  INFO Status connected_peers=2 stage=Execution checkpoint=9107459 target=9361407 stage_progress=92.63%
+Jan 08 13:55:04 strn tempo[750976]: 2026-01-08T13:55:04.917979Z  INFO Executed block range start=9108662 end=9108836 throughput="132.70Mgas/second"
+Jan 08 13:55:14 strn tempo[750976]: 2026-01-08T13:55:14.943017Z  INFO Executed block range start=9108837 end=9109015 throughput="131.74Mgas/second"
+Jan 08 13:55:25 strn tempo[750976]: 2026-01-08T13:55:25.008116Z  INFO Executed block range start=9109016 end=9109200 throughput="134.91Mgas/second"
+Jan 08 13:55:26 strn tempo[750976]: 2026-01-08T13:55:26.978638Z  INFO Status connected_peers=2 stage=Execution checkpoint=9107459 target=9361407 stage_progress=92.63%
+Jan 08 13:55:35 strn tempo[750976]: 2026-01-08T13:55:35.025139Z  INFO Executed block range start=9109201 end=9109394 throughput="140.61Mgas/second"
+Jan 08 13:55:45 strn tempo[750976]: 2026-01-08T13:55:45.037153Z  INFO Executed block range start=9109395 end=9109582 throughput="139.42Mgas/second"
+Jan 08 13:55:51 strn tempo[750976]: 2026-01-08T13:55:51.978982Z  INFO Status connected_peers=2 stage=Execution checkpoint=9107459 target=9361407 stage_progress=92.63%
+Jan 08 13:55:55 strn tempo[750976]: 2026-01-08T13:55:55.041863Z  INFO Executed block range start=9109583 end=9109778 throughput="137.54Mgas/second"
+
 ### eth_blockNumber
 curl -s -X POST -H "content-type: application/json" \
   --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
