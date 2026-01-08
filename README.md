@@ -32,8 +32,51 @@ sudo bash ./tempo-rpc.sh --snapshot --snapshot-force --snapshot-download-to-file
 - Snapshots are large (200GB+). **Do NOT host snapshots on GitHub**. Use object storage (S3/R2/OSS/B2/etc.) and provide a public HTTPS URL.
 
 ## Non-snapshot install
-sudo bash ./tempo-rpc.sh## Verify
-Local checks:
+sudo bash ./tempo-rpc.sht / Version Mismatch
+about: Report sync issues, snapshot incompatibility, genesis mismatch, TxType errors
+title: "[RPC][SYNC] <short summary>"
+labels: ["bug"]
+---
+
+## Summary
+Describe the issue in 1–2 sentences.
+
+## Environment
+- Network / chain: testnet (chainId 42429)
+- Server OS: 
+- CPU/RAM/Disk:
+- Tempo version: `tempo --version` output:
+- Git ref (tag/commit): 
+- Snapshot URL used (if any):
+
+## Service command (systemd)
+Paste:
+sudo systemctl show tempo.service -p ExecStart --no-pager## Steps to reproduce
+1.
+2.
+3.
+
+## Expected vs actual
+- Expected:
+- Actual:
+
+## Logs (most relevant)
+Paste the last ~200 lines around the error/panic:
+sudo journalctl -u tempo.service -n 200 --no-pagerIf possible, include filtered output:
+sudo journalctl -u tempo.service -n 500 --no-pager | grep -i -E "panic|error|deserial|genesis|Unsupported|TxType|Status|checkpoint|target|latest_block"## RPC checks
+### eth_blockNumber
+curl -s -X POST -H "content-type: application/json" \
+  --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' \
+  http://localhost:8545### net_peerCount
+curl -s -X POST -H "content-type: application/json" \
+  --data '{"jsonrpc":"2.0","method":"net_peerCount","params":[],"id":1}' \
+  http://localhost:8545### eth_syncing
+curl -s -X POST -H "content-type: application/json" \
+  --data '{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}' \
+  http://localhost:8545## Firewall / ports
+- 30303/tcp open? 
+- 30303/udp open?
+- 8545/tcp open? (if public)
 
 # height
 curl -s -X POST -H "content-type: application/json" \
