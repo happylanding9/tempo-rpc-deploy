@@ -65,11 +65,13 @@ If you expose 8545 publicly, consider restricting access (IP allowlist / reverse
 ## Common issues
 
 ### `connected_peers=0` / stuck sync
+
 - Ensure **30303/tcp** and **30303/udp** are open in:
   - server firewall (e.g., ufw)
   - cloud security group / security rules
 
 ### `genesis hash mismatch`
+
 Example:
 `genesis hash in the storage does not match the specified chainspec`
 
@@ -78,17 +80,22 @@ Fix:
 - Ensure the snapshot matches the chain you are starting.
 
 ### `Block deserialization` / `Unsupported TxType`
+
 This usually indicates node version vs snapshot incompatibility.
 - Try using a snapshot built for your node version, or re-import a newer snapshot.
 - If you switched versions/tags, re-import a compatible snapshot into a clean datadir.
 
 ### Running multiple instances on the same host
+
 You must avoid port conflicts. In particular, the default Engine/AuthRPC port (8551) can conflict.
+
 Use a different port with:
 - `--authrpc.port <PORT>`
-and also adjust:
+
+And also adjust:
 - `--http.port <PORT>`
 - `--port <P2P_PORT>` and `--discovery.port <P2P_PORT>`
 
 ## License
+
 MIT
